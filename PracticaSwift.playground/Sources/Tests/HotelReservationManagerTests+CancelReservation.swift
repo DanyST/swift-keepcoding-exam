@@ -14,7 +14,8 @@ extension HotelReservationManagerTests {
             let reservationAdded1 = try hotelReservationManager.addReservation(clientList: clientList, durationOfDays: 2, breakfastOption: true)
             assert(hotelReservationManager.allReservations.count == 1)
             
-            try hotelReservationManager.cancelReservation(byId: reservationAdded1.id)
+            let reservationCancelled1 = try hotelReservationManager.cancelReservation(byId: reservationAdded1.id)
+            assert(reservationAdded1 == reservationCancelled1)
             assert(hotelReservationManager.allReservations.count == .zero)
             
             let clientList2 = [
@@ -24,7 +25,8 @@ extension HotelReservationManagerTests {
             let reservationAdded2 = try hotelReservationManager.addReservation(clientList: clientList2, durationOfDays: 1, breakfastOption: true)
             assert(hotelReservationManager.allReservations.count == 1)
             
-            try hotelReservationManager.cancelReservation(byId: reservationAdded2.id)
+            let reservationCancelled2 = try hotelReservationManager.cancelReservation(byId: reservationAdded2.id)
+            assert(reservationAdded2 == reservationCancelled2)
             assert(hotelReservationManager.allReservations.count == .zero)
         } catch {
             assertionFailure("This case must not occur")
