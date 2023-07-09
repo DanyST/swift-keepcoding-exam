@@ -1,6 +1,6 @@
 import Foundation
 
-public class HotelReservationManager: HotelReservationManagerProtocol {
+public class HotelReservationManager {
     private enum Constants {
         static let hotelName = "Hotel Luchadores"
         static let basePriceClient: Double = 20
@@ -11,7 +11,9 @@ public class HotelReservationManager: HotelReservationManagerProtocol {
     private var reservations = Set<Reservation>()
     
     public init() {}
-    
+}
+
+extension HotelReservationManager: HotelReservationManagerProtocol {
     public var allReservations: [Reservation] {
         reservations.sorted(by: >)
     }
@@ -24,7 +26,7 @@ public class HotelReservationManager: HotelReservationManagerProtocol {
             throw ReservationError.emptyClients
         }
         
-        let id = reservations.count + 1
+        let id = calculateNewReservationId()
         
         let newReservation = Reservation(
             id: id,
@@ -35,7 +37,7 @@ public class HotelReservationManager: HotelReservationManagerProtocol {
             breakfastOption: breakfastOption
         )
         
-        try validateNewReservation(newReservation)
+        try validateNewReservationBeforeToSave(newReservation)
         
         reservations.insert(newReservation)
         return newReservation
@@ -52,7 +54,11 @@ public class HotelReservationManager: HotelReservationManagerProtocol {
 }
 
 private extension HotelReservationManager {
-    func validateNewReservation(_ newReservation: Reservation) throws {
+    func calculateNewReservationId() -> Int {
+        reservations.count + 1
+    }
+    
+    func validateNewReservationBeforeToSave(_ newReservation: Reservation) throws {
         if !reservations.isEmpty {
             let isReservationExisting = reservations.contains { $0.id == newReservation.id }
             if isReservationExisting {

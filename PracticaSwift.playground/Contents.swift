@@ -1,6 +1,7 @@
 import Foundation
 
 //: HotelReservationManager
+
 let hotelReservationManager: HotelReservationManagerProtocol = HotelReservationManager()
 let clientList = [
     Client(name: "Goku", age: 40, height: 180),
@@ -9,15 +10,15 @@ let clientList = [
 
 let reservationAdded = try? hotelReservationManager.addReservation(clientList: clientList, durationOfDays: 10, breakfastOption: true)
 reservationAdded
-hotelReservationManager.allReservations
+print("Reservation List with newly added reservations \n", hotelReservationManager.allReservations)
 
-let reservationCanceled = try? hotelReservationManager.cancelReservation(byId: reservationAdded!.id)
+let reservationCanceled = try? hotelReservationManager.cancelReservation(byId: reservationAdded?.id ?? .zero)
 reservationCanceled
-hotelReservationManager.allReservations
+print("Reservation List with empty content, because the only existing reservation was canceled. \n", hotelReservationManager.allReservations)
 
 
+//: Unit Tests
 
-//: Tests
 let hotelReservationTests = HotelReservationManagerTests()
 hotelReservationTests.testAddReservation_WithCorrectData_ReservationAddSuccessfully()
 hotelReservationTests.testAddReservation_SuccessfullyAddedReservation_TheCorrectReservationPrice()
